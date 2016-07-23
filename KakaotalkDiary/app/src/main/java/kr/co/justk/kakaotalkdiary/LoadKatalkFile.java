@@ -1,4 +1,4 @@
-package kr.co.justk.kakaotalkdiary.Util;
+package kr.co.justk.kakaotalkdiary;
 
 import android.os.Environment;
 import android.util.Log;
@@ -29,7 +29,6 @@ public class LoadKatalkFile {
     String filePath = null;
     FileInputStream fis = null;
     String str = null;
-    StringBuffer strBuffer = null;
     String txtStr = null;
 
     Pattern namePattern, datePattern, talkDatePattern;
@@ -41,15 +40,20 @@ public class LoadKatalkFile {
     String fDate = null;
     String lDate = null;
 
+    public LoadKatalkFile(){}
+
     /**
      * Chats 폴더 여부 체크
      */
     public boolean ischeckedChatFolder(){
-        if(!chatFiles.exists()){
-            Log.e(TAG,"no chat folder");
+        if(!talkFiles.exists()){
+            Log.e(TAG, "no chat folder");
             return false;
         }else{
-            Log.i(TAG,"exists chat folder");
+            Log.i(TAG, "exists chat folder");
+            Log.e(TAG, talkFiles.getAbsolutePath());
+            Log.e(TAG, String.valueOf(talkFiles.list()));
+            Log.e(TAG, String.valueOf(talkFiles.listFiles()));
             return true;
         }
     }
@@ -60,7 +64,9 @@ public class LoadKatalkFile {
      */
     public void getKatalkChatFile() {
         if (talkFiles.listFiles().length > 0) { //SD카드 내에 카톡대화 파일이 있다면
+            Log.e(TAG, "Step01 ");
             for (File folderList : talkFiles.listFiles()) { //Chats 폴더 내 모든 폴더 리스트
+                Log.e(TAG, "Step02 ");
                 folderName = folderList.getName();
                 //String tmpFolderName = folderList.getName();
                 //String saveYear = tmpFolderName.substring(16, 20);
@@ -78,6 +84,7 @@ public class LoadKatalkFile {
                                     + "KakaoTalkChats.txt");
                             BufferedReader bufferReader = new BufferedReader(
                                     new InputStreamReader(fis));
+                            StringBuffer strBuffer = new StringBuffer();
 
                             //TODO : file을 다 읽고 데이터 처리 vs file을 데이터 처리하면서 읽기
                             while ((str = bufferReader.readLine()) != null) {
